@@ -31,7 +31,6 @@ archives_path="/home/vagrant/archives"
 results_path="/home/vagrant/results"
 tmpfs_path="/home/vagrant/tmpfs"
 project_path="$tmpfs_path/project"
-project_armmock_path="$tmpfs_path/project_arm"
 cross_chroot="/home/vagrant/cross/"
 rpm_build_script_path=`pwd`
 
@@ -170,7 +169,6 @@ src_rpm_name=`sudo ls $cross_chroot/rootfs/root/rpmbuild/SRPMS/ -1 | grep 'src.r
 echo $src_rpm_name
 echo '--> Building rpm...'
 export_list="gl_cv_func_printf_enomem=yes FORCE_UNSAFE_CONFIGURE=1 ac_cv_path_MSGMERGE=/usr/bin/msgmerge ac_cv_javac_supports_enums=yes"
-#sudo chroot $cross_chroot/rootfs/ /bin/bash --init-file /etc/bashrc -i  -c "armock -t $platform_arch -p /root/rpmbuild/SRPMS/$src_rpm_name"
 sudo chroot $cross_chroot/rootfs/ /bin/bash --init-file /etc/bashrc -i -c "urpmi --buildrequires --ignorearch --auto --no-verify-rpm /root/rpmbuild/SPECS/$spec_name && exit"
 sudo chroot $cross_chroot/rootfs/ /bin/bash --init-file /etc/bashrc -i -c " export $export_list;/usr/bin/rpmbuild --without check --target=$platform_arch -ba -v /root/rpmbuild/SPECS/$spec_name"
 
